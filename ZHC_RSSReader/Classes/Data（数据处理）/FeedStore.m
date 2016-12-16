@@ -85,6 +85,7 @@
                 if ([self isEqualToWithDoNotCareLowcaseString:channelChild.tag compareString:@"item"]) {
                     // 在item标签里，循环
                     FeedModel *feedmodel = [[FeedModel alloc]init];
+                    feedmodel.feedName = model.title;
                     for (ONOXMLElement *channelItem in channelChild.children) {
                         if([self isEqualToWithDoNotCareLowcaseString:channelItem.tag compareString:@"title"]){
                             feedmodel.title = channelItem.stringValue;
@@ -102,12 +103,10 @@
                             feedmodel.category = channelItem.stringValue;
                         }
                         if ([self isEqualToWithDoNotCareLowcaseString:channelItem.tag compareString:@"encoded"] || [self isEqualToWithDoNotCareLowcaseString:channelItem.tag compareString:@"description"]) {
-                            if(channelItem.stringValue.length < 700){
-                                
-                                feedmodel.summary = channelItem.stringValue;
-                            }else{
-                                feedmodel.feedDescription = channelItem.stringValue;
-                            }
+                            feedmodel.feedDescription = channelItem.stringValue;
+                        }
+                        if ([self isEqualToWithDoNotCareLowcaseString:channelItem.tag compareString:@"description"]) {
+                            feedmodel.summary = channelItem.stringValue;
                         }
                     }
                     [itemArray addObject:feedmodel];
@@ -135,6 +134,7 @@
             
             // 在entry标签里，循环
             FeedModel *feedmodel = [[FeedModel alloc]init];
+            feedmodel.feedName = model.title;
             for (ONOXMLElement *entryChild in element.children) {
                 
                 if([self isEqualToWithDoNotCareLowcaseString:entryChild.tag compareString:@"link"]){
@@ -149,7 +149,7 @@
                 if([self isEqualToWithDoNotCareLowcaseString:entryChild.tag compareString:@"author"]){
                     
                     for (ONOXMLElement *authorChild in entryChild.children) {
-                        if([self isEqualToWithDoNotCareLowcaseString:entryChild.tag compareString:@"name"]){
+                        if([self isEqualToWithDoNotCareLowcaseString:authorChild.tag compareString:@"name"]){
                             feedmodel.authorName = authorChild.stringValue;
                         }
                     }
