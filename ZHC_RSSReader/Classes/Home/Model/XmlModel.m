@@ -21,7 +21,6 @@
         
         _title   = title;
         _feedUrl = link;
-        _link = link;
     }
     return self;
 }

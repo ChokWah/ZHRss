@@ -40,6 +40,9 @@
 /** 文章ID*/
 @property (nonatomic, assign) NSUInteger fID;
 
+/** Feed名字*/
+@property (nonatomic, strong) NSString *feedName;
+
 /** 是否隐藏*/
 //@property (nonatomic, assign) NSUInteger ishide;
 
@@ -65,7 +68,7 @@
 /** 描述*/
 @property (nonatomic, copy) NSString *rssDescription;
 
-/** 链接*/
+/** 官网主页*/
 @property (nonatomic, copy) NSString *link;
 
 /** 版权*/
