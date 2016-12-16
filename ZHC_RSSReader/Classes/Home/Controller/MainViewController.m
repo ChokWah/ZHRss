@@ -15,6 +15,7 @@
 #import "FeedManager.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import "FeedCell.h"
+#import "ReadFeedViewController.h"
 
 @interface MainViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -131,7 +132,7 @@
         self.rssTableView.delegate = self;
         self.rssTableView.dataSource = self;//.dadaSource;
         self.rssTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        self.rssTableView.backgroundColor = [UIColor lightGrayColor];
+        self.rssTableView.backgroundColor = ZHColor(220, 220, 220);
         self.rssTableView;
     })];
 }
@@ -211,7 +212,9 @@
     
    XmlModel *model = [self.dataArray objectAtIndex:indexPath.section];
    FeedModel *cellModel = [model.modelArray objectAtIndex:indexPath.row];
-   RssDetailViewController *rssVC = [[RssDetailViewController alloc]initWithModel:cellModel];
+    
+   //RssDetailViewController *rssVC = [[RssDetailViewController alloc]initWithModel:cellModel];
+   ReadFeedViewController  *rssVC = [[ReadFeedViewController alloc]initWithModel:cellModel];
     
    [self.navigationController pushViewController:rssVC animated:YES];
 }
