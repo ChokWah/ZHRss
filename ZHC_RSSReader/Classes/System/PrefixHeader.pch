@@ -1,0 +1,41 @@
+//
+//  PrefixHeader.pch
+//  ZHC_RSSReader
+//
+//  Created by 4DAGE_HUA on 16/10/18.
+//  Copyright © 2016年 ZHC. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+#import "UIImageView+WebCache.h"
+#import "UIView+Extension.h"
+#import "UIImage+Extension.h"
+#import "UIBarButtonItem_ZHExtension.h"
+#import "UIColor+ZHColor.h"
+#import "Masonry.h"
+#import "UIImageView+WebCache.h"
+
+#define ZHColor(r, g, b) [UIColor colorWithRed:r/255.0f green:g/255.0f blue:b/255.0f alpha:1]
+#define ZHFILEMANAGER [NSFileManager defaultManager]
+//沙盒文档路径
+#define ZHdocumentPath [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES)lastObject]
+
+//抽屉顶部距离 底部一样
+#define ZhScaleTopMargin 35
+//app的高度
+#define ZHAppWidth ([UIScreen mainScreen].bounds.size.width)
+//app的宽度
+#define ZHAppHeight ([UIScreen mainScreen].bounds.size.height)
+//抽屉拉出来右边剩余比例
+#define ZHZoomScaleRight 0.14
+
+//推荐cell的高度
+#define ZHRnmdCellHeight 210.0
+
+
+//判断系统版本号是否是iOS8以上
+#define iOS8 [[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0
+
+#endif /* PrefixHeader_pch */
