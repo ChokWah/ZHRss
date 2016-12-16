@@ -50,15 +50,13 @@ static NSString *Identifier = @"FeedCell";
         
         CGFloat spacing = 5.0f;
         
-        self.backgroundColor = [UIColor grayColor];
-        
         _iconImgview = [[UIImageView alloc] init];
         [self.contentView addSubview:_iconImgview];
         [_iconImgview mas_makeConstraints:^(MASConstraintMaker *make) {
             
             make.left.top.equalTo(self.contentView).insets(UIEdgeInsetsMake(spacing,spacing,0,0));
-            make.width.equalTo(@35);
-            make.height.equalTo(@35);
+            make.width.equalTo(@40);
+            make.height.equalTo(@40);
             //            self.cB = make.height.equalTo(@0).priority(UILayoutPriorityRequired);
         }];
         
@@ -69,7 +67,7 @@ static NSString *Identifier = @"FeedCell";
         [_authorName mas_makeConstraints:^(MASConstraintMaker *make) {
             
             make.left.equalTo(_iconImgview.mas_right).offset(spacing);
-            make.right.top.equalTo(self.contentView).insets(UIEdgeInsetsMake(spacing, 0, 0, spacing));
+            make.top.equalTo(self.contentView).offset(spacing);
             make.height.equalTo(@25).priorityLow();
             //            self.cY = make.height.equalTo(@0).priority(UILayoutPriorityRequired);
         }];
@@ -85,7 +83,7 @@ static NSString *Identifier = @"FeedCell";
         }];
         
         _articleTitle = [[UILabel alloc] init];
-        _articleTitle.font = [UIFont systemFontOfSize:20];
+        _articleTitle.font = [UIFont systemFontOfSize:18];
         _articleTitle.numberOfLines = 2;
         [self.contentView addSubview:_articleTitle];
         [_articleTitle mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -99,11 +97,11 @@ static NSString *Identifier = @"FeedCell";
         _articleDetail = [[UILabel alloc] init];
         _articleDetail.numberOfLines = 3;
         _articleDetail.textColor = [UIColor grayColor];
-        _articleDetail.font = [UIFont systemFontOfSize:18];
+        _articleDetail.font = [UIFont systemFontOfSize:14];
         [self.contentView addSubview:_articleDetail];
         [_articleDetail mas_makeConstraints:^(MASConstraintMaker *make) {
             
-            make.top.equalTo(_articleTitle.mas_bottom).offset(spacing);
+            make.top.equalTo(_articleTitle.mas_bottom).offset(1);
             make.left.right.equalTo(self.contentView).insets(UIEdgeInsetsMake(0, spacing, 0, spacing));
             make.height.equalTo(@35).priorityLow();
         }];
@@ -121,7 +119,7 @@ static NSString *Identifier = @"FeedCell";
         [self.contentView addSubview:_commentview];
         [_commentview mas_makeConstraints:^(MASConstraintMaker *make) {
             
-            make.top.equalTo(_articleDetail.mas_bottom).offset(spacing);
+            make.bottom.equalTo(self.contentView.mas_bottom).offset(-spacing);
             make.left.equalTo(_likeview.mas_right).offset(spacing);
             make.width.equalTo(@25);
             make.height.equalTo(@25).priorityLow();
@@ -136,10 +134,26 @@ static NSString *Identifier = @"FeedCell";
     [self.iconImgview setImage:[UIImage imageNamed:@"zhanwei.jpeg"]];
     self.authorName.text = model.authorName;
     self.articleTitle.text = model.title;
+    self.feedName.text = model.feedName;
+//    if(model.summary.length == 0 || model.summary == nil){
+//        
+//        self.articleDetail.text = model.feedDescription;
+//        
+//    }else{
+    
     self.articleDetail.text = model.summary;
+    
+    
     self.likeview.backgroundColor = [UIColor greenColor];
     self.commentview.backgroundColor = [UIColor redColor];
 }
 
+-(void)setFrame:(CGRect)frame{
+    
+    //frame.origin.x = 5;//这里间距为10，可以根据自己的情况调整
+   // frame.size.width -= 2 * frame.origin.x;
+    frame.size.height -= 2 * 5;
+    [super setFrame:frame];
+}
 
 @end
