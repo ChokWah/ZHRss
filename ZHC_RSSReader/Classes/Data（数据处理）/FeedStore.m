@@ -18,6 +18,7 @@
 //https://www.zhihu.com/rss
 //http://www.ifanr.com/feed
 //http://www.geekpark.net/rss
+//http://blog.ibireme.com/feed/
 
 @implementation FeedStore
 
@@ -173,7 +174,7 @@
     return model;
 }
 
-// 获取文章内容（feed内只有大概描述）
+// 以阅读全文结尾的不完整文章：获取文章内容（feed内只有大概描述）
 - (BOOL)getAtomDescriptionWith:(FeedModel *)model{
     
     NSError *error;

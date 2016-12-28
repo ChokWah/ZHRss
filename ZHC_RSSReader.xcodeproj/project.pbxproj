@@ -13,6 +13,8 @@
 		740F00C51DFEA8B6004ADDAD /* FeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 740F00C41DFEA8B6004ADDAD /* FeedCell.m */; };
 		740F00C81DFEB355004ADDAD /* LikeIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = 740F00C71DFEB355004ADDAD /* LikeIcon.m */; };
 		740F00CB1DFEB37D004ADDAD /* CommentIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = 740F00CA1DFEB37D004ADDAD /* CommentIcon.m */; };
+		740F02B51E03BF44004ADDAD /* ReadFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 740F02B41E03BF44004ADDAD /* ReadFeedViewController.m */; };
+		742472341E0A78F70095E6EA /* FeedCellFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 742472331E0A78F70095E6EA /* FeedCellFrame.m */; };
 		745B6E681DF7B332001F1B41 /* entry.txt in Resources */ = {isa = PBXBuildFile; fileRef = 745B6E671DF7B332001F1B41 /* entry.txt */; };
 		74AC8D651DEC63AB00D22EBF /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AC8D5A1DEC63AB00D22EBF /* FMDatabase.m */; };
 		74AC8D661DEC63AB00D22EBF /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AC8D5C1DEC63AB00D22EBF /* FMDatabaseAdditions.m */; };
@@ -38,7 +40,7 @@
 		74CB38C81DDD55A80023EBC3 /* ONOXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 74CB38C71DDD55A80023EBC3 /* ONOXMLDocument.m */; };
 		74CB38CA1DDD55E70023EBC3 /* libxml2.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 74CB38C91DDD55E70023EBC3 /* libxml2.2.tbd */; };
 		74CB38CD1DDDA74F0023EBC3 /* RssDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74CB38CC1DDDA74F0023EBC3 /* RssDetailViewController.m */; };
-		74CB38D01DDE99000023EBC3 /* RSSDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 74CB38CF1DDE99000023EBC3 /* RSSDetailView.m */; };
+		74CB38D01DDE99000023EBC3 /* RSSHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 74CB38CF1DDE99000023EBC3 /* RSSHeader.m */; };
 		74CB38D31DDEA8990023EBC3 /* RssButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74CB38D21DDEA8990023EBC3 /* RssButtonItem.m */; };
 		74CB3B5F1DE33EF40023EBC3 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74CB3B5E1DE33EF40023EBC3 /* CoreText.framework */; };
 		74CB3B611DE33F430023EBC3 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74CB3B601DE33F430023EBC3 /* CoreFoundation.framework */; };
@@ -123,6 +125,10 @@
 		740F00C71DFEB355004ADDAD /* LikeIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LikeIcon.m; sourceTree = "<group>"; };
 		740F00C91DFEB37D004ADDAD /* CommentIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentIcon.h; sourceTree = "<group>"; };
 		740F00CA1DFEB37D004ADDAD /* CommentIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentIcon.m; sourceTree = "<group>"; };
+		740F02B31E03BF44004ADDAD /* ReadFeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadFeedViewController.h; sourceTree = "<group>"; };
+		740F02B41E03BF44004ADDAD /* ReadFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReadFeedViewController.m; sourceTree = "<group>"; };
+		742472321E0A78F70095E6EA /* FeedCellFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedCellFrame.h; sourceTree = "<group>"; };
+		742472331E0A78F70095E6EA /* FeedCellFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedCellFrame.m; sourceTree = "<group>"; };
 		7426EB281DF075590007FAFC /* libDTCoreText.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libDTCoreText.a; path = "../../../Library/Developer/Xcode/DerivedData/Build/Products/Debug-iphonesimulator/DTCoreText/libDTCoreText.a"; sourceTree = "<group>"; };
 		7426EB291DF075590007FAFC /* libDTFoundation.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libDTFoundation.a; path = "../../../Library/Developer/Xcode/DerivedData/Build/Products/Debug-iphonesimulator/DTFoundation/libDTFoundation.a"; sourceTree = "<group>"; };
 		745B6E671DF7B332001F1B41 /* entry.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = entry.txt; sourceTree = "<group>"; };
@@ -172,8 +178,8 @@
 		74CB38C91DDD55E70023EBC3 /* libxml2.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.2.tbd; path = usr/lib/libxml2.2.tbd; sourceTree = SDKROOT; };
 		74CB38CB1DDDA74F0023EBC3 /* RssDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RssDetailViewController.h; sourceTree = "<group>"; };
 		74CB38CC1DDDA74F0023EBC3 /* RssDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RssDetailViewController.m; sourceTree = "<group>"; };
-		74CB38CE1DDE99000023EBC3 /* RSSDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSDetailView.h; sourceTree = "<group>"; };
-		74CB38CF1DDE99000023EBC3 /* RSSDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSDetailView.m; sourceTree = "<group>"; };
+		74CB38CE1DDE99000023EBC3 /* RSSHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSHeader.h; sourceTree = "<group>"; };
+		74CB38CF1DDE99000023EBC3 /* RSSHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSHeader.m; sourceTree = "<group>"; };
 		74CB38D11DDEA8990023EBC3 /* RssButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RssButtonItem.h; sourceTree = "<group>"; };
 		74CB38D21DDEA8990023EBC3 /* RssButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RssButtonItem.m; sourceTree = "<group>"; };
 		74CB3B5E1DE33EF40023EBC3 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -563,6 +569,8 @@
 				74CB380A1DDC0EF30023EBC3 /* MainViewController.m */,
 				74CB38CB1DDDA74F0023EBC3 /* RssDetailViewController.h */,
 				74CB38CC1DDDA74F0023EBC3 /* RssDetailViewController.m */,
+				740F02B31E03BF44004ADDAD /* ReadFeedViewController.h */,
+				740F02B41E03BF44004ADDAD /* ReadFeedViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -572,6 +580,8 @@
 			children = (
 				74CB380C1DDC11300023EBC3 /* XmlModel.h */,
 				74CB380D1DDC11300023EBC3 /* XmlModel.m */,
+				742472321E0A78F70095E6EA /* FeedCellFrame.h */,
+				742472331E0A78F70095E6EA /* FeedCellFrame.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -579,8 +589,8 @@
 		74FA23B21DB5B7CC001F8A88 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				74CB38CE1DDE99000023EBC3 /* RSSDetailView.h */,
-				74CB38CF1DDE99000023EBC3 /* RSSDetailView.m */,
+				74CB38CE1DDE99000023EBC3 /* RSSHeader.h */,
+				74CB38CF1DDE99000023EBC3 /* RSSHeader.m */,
 				74CB38D11DDEA8990023EBC3 /* RssButtonItem.h */,
 				74CB38D21DDEA8990023EBC3 /* RssButtonItem.m */,
 				740F00C31DFEA8B6004ADDAD /* FeedCell.h */,
@@ -926,6 +936,7 @@
 				74FA23F01DB5BA09001F8A88 /* MASConstraint.m in Sources */,
 				74FA23F81DB5BA09001F8A88 /* ViewController+MASAdditions.m in Sources */,
 				74FA23CB1DB5B7CC001F8A88 /* UIView+Extension.m in Sources */,
+				742472341E0A78F70095E6EA /* FeedCellFrame.m in Sources */,
 				74AC8D6D1DEC643B00D22EBF /* FeedDB.m in Sources */,
 				74FA23C61DB5B7CC001F8A88 /* UIBarButtonItem_ZHExtension.m in Sources */,
 				74CB38221DDC35150023EBC3 /* AFURLSessionManager.m in Sources */,
@@ -969,9 +980,10 @@
 				74CB38C81DDD55A80023EBC3 /* ONOXMLDocument.m in Sources */,
 				74CB3BA21DE3467B0023EBC3 /* SDWebImagePrefetcher.m in Sources */,
 				74CB3BA91DE3467B0023EBC3 /* UIView+WebCacheOperation.m in Sources */,
-				74CB38D01DDE99000023EBC3 /* RSSDetailView.m in Sources */,
+				74CB38D01DDE99000023EBC3 /* RSSHeader.m in Sources */,
 				74FA23481DB512BA001F8A88 /* main.m in Sources */,
 				74CB3BA41DE3467B0023EBC3 /* UIImage+GIF.m in Sources */,
+				740F02B51E03BF44004ADDAD /* ReadFeedViewController.m in Sources */,
 				74FA23F21DB5BA09001F8A88 /* MASLayoutConstraint.m in Sources */,
 				74CB38211DDC35150023EBC3 /* AFURLResponseSerialization.m in Sources */,
 				74FA23CA1DB5B7CC001F8A88 /* UITableView+tableViewType.m in Sources */,

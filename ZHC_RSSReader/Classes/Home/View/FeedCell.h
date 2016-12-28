@@ -12,9 +12,13 @@
 @class FeedModel;
 @interface FeedCell : UITableViewCell
 
+@property (nonatomic, assign) CGFloat cellHeight;
+
 + (instancetype)cellWithTableView:(UITableView *)tableview;
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
 
 - (void)config:(FeedModel *)model;
+
+
 @end

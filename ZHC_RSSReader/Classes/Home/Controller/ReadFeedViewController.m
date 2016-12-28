@@ -1,48 +1,45 @@
 //
-//  RssDetailViewController.m
+//  ReadFeedViewController.m
 //  ZHC_RSSReader
 //
-//  Created by 4DAGE_HUA on 16/11/17.
+//  Created by 4DAGE_HUA on 16/12/16.
 //  Copyright © 2016年 ZHC. All rights reserved.
 //
 
-#import "RssDetailViewController.h"
+#import "ReadFeedViewController.h"
 #import "XmlModel.h"
 #import <DTCoreText/DTCoreText.h>
 #import "FeedManager.h"
+#import "RSSHeader.h"
 
-@interface RssDetailViewController ()< DTAttributedTextContentViewDelegate, DTLazyImageViewDelegate, DTHTMLParserDelegate>{// UITableViewDelegate, UITableViewDataSource,
+@interface ReadFeedViewController () <UITableViewDelegate, UITableViewDataSource, DTAttributedTextContentViewDelegate, DTLazyImageViewDelegate, DTHTMLParserDelegate>{
     
     NSCache *cellCache;
     BOOL _useStaticRowHeight;
+    FeedModel *model;
 }
 
-@property (nonatomic, strong) FeedModel *model;
+@property (nonatomic, strong) NSString    *cssString;
 
-@property (nonatomic, strong) UIView *backButton;
+@property (nonatomic, strong) UIView      *backButton;
 
-@property (nonatomic, strong) UIButton *followButton;
+@property (nonatomic, strong) UIButton    *followButton;
 
 @property (nonatomic, strong) UIImageView *iconImageView;
 
-@property (nonatomic, strong) DTAttributedTextView *textview;
-
-//@property (nonatomic, strong) UITableView *articleTableView;
-
-@property (nonatomic, strong) NSString *cssString;
+@property (nonatomic, strong) UITableView *articleTableView;
 
 @end
 
-//NSString * const AttributedTextCellReuseIdentifier = @"AttributedTextCellReuseIdentifier";
+NSString * const AttributedTextCellReuseIdentifier = @"AttributedTextCellReuseIdentifier";
 
-@implementation RssDetailViewController
+@implementation ReadFeedViewController
 
-#pragma mark - init方法
 - (instancetype)initWithModel:(FeedModel *)feedModel{
     
     if (self = [super init]) {
         
-        self.model = feedModel;
+        model = feedModel;
     }
     return self;
 }
@@ -51,6 +48,8 @@
 - (UIView *)backButton{
     
     if (!_backButton) {
+
+#warning 使用stroke需要放在drawrect里面, 使用CAShapeLayer宽度不生效
         
         _backButton = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 50, 44)];
         UIBezierPath *path = [UIBezierPath bezierPath];// 创建路径对象
@@ -64,6 +63,7 @@
         path.lineCapStyle = kCGLineCapRound;
         path.lineJoinStyle = kCGLineJoinRound;
         path.lineWidth = 5.0;
+        
         //backLayer.fillColor = nil;
         //backLayer.strokeColor = [UIColor blueColor].CGColor;
         
@@ -76,18 +76,18 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(goToBack)];
         [tap setNumberOfTouchesRequired:1];
         [_backButton addGestureRecognizer:tap];
-
+        
     }
     return _backButton;
 }
 
-//- (UITableView *)articleTableView{
-//    
-//    if (!_articleTableView) {
-//        _articleTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ZHAppWidth, ZHAppHeight) style:UITableViewStyleGrouped];
-//    }
-//    return _articleTableView;
-//}
+- (UITableView *)articleTableView{
+
+    if (!_articleTableView) {
+        _articleTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ZHAppWidth, ZHAppHeight) style:UITableViewStylePlain];
+    }
+    return _articleTableView;
+}
 
 - (NSString *)cssString{
     
@@ -104,21 +104,6 @@
         _followButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 44)];
     }
     return _followButton;
-}
-
-- (DTAttributedTextView *)textview{
-    
-    if (!_textview) {
-        
-        _textview = [[DTAttributedTextView alloc] initWithFrame:CGRectMake(0, 0, ZHAppWidth, ZHAppHeight)];
-        _textview.shouldDrawImages = NO;
-        _textview.shouldDrawLinks = NO;
-        _textview.textDelegate = self;
-        [_textview setScrollIndicatorInsets:UIEdgeInsetsMake(0, 0, 44, 0)];
-        _textview.contentInset = UIEdgeInsetsMake(10, 10, 54, 10);
-        _textview.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    }
-    return _textview;
 }
 
 #pragma mark - 加载画面
@@ -141,18 +126,20 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+    
     self.view.backgroundColor = ZHColor(123, 191, 234);
     
-//    self.articleTableView.delegate = self;
-//    self.articleTableView.dataSource = self;
-//    [self.view addSubview:self.articleTableView];
+    self.articleTableView.delegate = self;
+    self.articleTableView.dataSource = self;
+    self.articleTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
+    [self.view addSubview:self.articleTableView];
     
-    if ([self.model.feedDescription hasSuffix:@"阅读全文</a>"]) {
-        BOOL issuccess = [[FeedManager defaultManager] getAtomDescriptionWith:self.model];
-        //issuccess ? [self.articleTableView reloadData] : nil;
+    if ([model.feedDescription hasSuffix:@"阅读全文</a>"]) {
+        BOOL issuccess = [[FeedManager defaultManager] getAtomDescriptionWith:model];
+        issuccess ? [self.articleTableView reloadData] : nil;
     }
-    self.textview.attributedString = [self _attributedStringForSnippetUsingiOS6Attributes:NO];
-    [self.view addSubview:self.textview];
+
 }
 
 
@@ -179,11 +166,11 @@
         [options setObject:[NSNumber numberWithBool:YES] forKey:DTUseiOS6Attributes];
     }
     
-    NSArray *arr = [self.model.feedDescription componentsSeparatedByString:@"<div id=\"ifanr_profile"];
+    NSArray *arr = [model.feedDescription componentsSeparatedByString:@"<div id=\"ifanr_profile"];
     if (arr.count > 1) {
-        self.model.feedDescription = (NSString *)arr.firstObject;
+        model.feedDescription = (NSString *)arr.firstObject;
     }
-    NSString *string = [NSString stringWithFormat:@"<style type=\"text/css\">%@</style>%@", self.cssString, self.model.feedDescription];
+    NSString *string = [NSString stringWithFormat:@"%@%@", self.cssString, model.feedDescription];
     NSAttributedString *attributString = [[NSAttributedString alloc] initWithHTMLData:[string dataUsingEncoding:NSUTF8StringEncoding] options:options documentAttributes:NULL];
     return attributString;
 }
@@ -193,82 +180,78 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)viewDidAppear:(BOOL)animated{
-    
-    [super viewDidAppear:animated];
-    _textview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
-}
+//- (void)viewDidAppear:(BOOL)animated{
+//    
+//    [super viewDidAppear:animated];
+//    _textview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//}
 
-/*
 #pragma mark - UITableView代理
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    
-    return 2;
-}
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
- 
     return 1;
 }
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+
+    return 2;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    if (indexPath.section == 1) {
-        
-        DTAttributedTextCell *dtCell =  (DTAttributedTextCell *)[self tableView:tableView preparedCellForIndexPath:indexPath];
+
+    if (indexPath.row == 1) {
+
+        DTAttributedTextCell *dtCell = (DTAttributedTextCell *)[self tableView:tableView preparedCellForIndexPath:indexPath];
         return dtCell;
-        
+
     }else{
-        
-        static NSString *cellID = @"NormalCell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-        if (!cell) {
-            cell = [[UITableViewCell alloc] init];
-        }
-        cell.textLabel.text = self.model.authorName;
-        return cell;
+
+        RSSHeader *headerCell = [RSSHeader cellWithTableView:tableView];
+        [headerCell configureCellWith:model];
+        return headerCell;
     }
 }
 
+// 计算高度
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
-    
-    if(indexPath.section == 1)
-    {
+
+    if(indexPath.row == 1){
+        
         DTAttributedTextCell *cell = (DTAttributedTextCell *)[self tableView:tableView preparedCellForIndexPath:indexPath];
+        return  [cell requiredRowHeightInTableView:tableView];
         
-        return [cell requiredRowHeightInTableView:tableView];
     }else{
-        
-        return 20;
+
+        return 100;
     }
 }
 
 - (DTAttributedTextCell *)tableView:(UITableView *)tableView preparedCellForIndexPath:(NSIndexPath *)indexPath{
-    
+
     // workaround for iOS 5 bug
     NSString *key = [NSString stringWithFormat:@"%ld-%ld", (long)indexPath.section, (long)indexPath.row];
     DTAttributedTextCell *cell = [cellCache objectForKey:key];
- 
+
     if (!cell) {
         
         [self _canReuseCells] ? (cell = (DTAttributedTextCell *)[tableView dequeueReusableCellWithIdentifier:AttributedTextCellReuseIdentifier]) : nil;
 
         if (!cell) {
-            
             cell = [[DTAttributedTextCell alloc] initWithReuseIdentifier:AttributedTextCellReuseIdentifier];
         }
+        
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.hasFixedRowHeight = _useStaticRowHeight;
-        
         [cellCache setObject:cell forKey:key];
     }
+    
     [self configureCell:cell forIndexPath:indexPath];
     return cell;
 }
 
 - (void)configureCell:(DTAttributedTextCell *)cell forIndexPath:(NSIndexPath *)indexPath{
-    
+
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     cell.attributedTextContextView.shouldDrawLinks = NO;
     cell.attributedTextContextView.shouldDrawImages = NO;
@@ -279,19 +262,18 @@
 }
 
 - (BOOL)_canReuseCells{
-    
+
     // reuse does not work for variable height
-    if ([self respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)])
-    {
+    if ([self respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)]){
         return NO;
     }
+    
     // only reuse cells with fixed height
-    return YES;
+        return YES;
 }
-*/
- 
+
+
 #pragma mark - DTAttributedTextContentViewDelegate
-#pragma mark Custom Views on Text
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame{
     
     NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:NULL];
@@ -311,10 +293,10 @@
     [button setImage:highlightImage forState:UIControlStateHighlighted];
     
     // use normal push action for opening URL
-    [button addTarget:self action:@selector(linkPushed:) forControlEvents:UIControlEventTouchUpInside];
-    // demonstrate combination with long press
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(linkLongPressed:)];
-    [button addGestureRecognizer:longPress];
+//    [button addTarget:self action:@selector(linkPushed:) forControlEvents:UIControlEventTouchUpInside];
+//    // demonstrate combination with long press
+//    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(linkLongPressed:)];
+//    [button addGestureRecognizer:longPress];
     
     return button;
 }
@@ -368,11 +350,11 @@
 }
 
 - (BOOL)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView shouldDrawBackgroundForTextBlock:(DTTextBlock *)textBlock frame:(CGRect)frame context:(CGContextRef)context forLayoutFrame:(DTCoreTextLayoutFrame *)layoutFrame{
-    UIBezierPath *roundedRect = [UIBezierPath bezierPathWithRoundedRect:CGRectInset(frame,1,1) cornerRadius:10];
     
+    UIBezierPath *roundedRect = [UIBezierPath bezierPathWithRoundedRect:CGRectInset(frame,1,1) cornerRadius:10];
     CGColorRef color = [textBlock.backgroundColor CGColor];
-    if (color)
-    {
+    if (color){
+        
         CGContextSetFillColorWithColor(context, color);
         CGContextAddPath(context, [roundedRect CGPath]);
         CGContextFillPath(context);
@@ -390,15 +372,16 @@
     
     NSURL *url = lazyImageView.url;
     CGSize imageSize = size;
-
+    
     
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
     
     BOOL didUpdate = NO;
+    DTAttributedTextCell *cell = [self.articleTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
     
     // update all attachments that match this URL (possibly multiple images with same size)
-    for (DTTextAttachment *oneAttachment in [_textview.attributedTextContentView.layoutFrame textAttachmentsWithPredicate:pred])
-    {
+    for (DTTextAttachment *oneAttachment in [cell.attributedTextContextView.layoutFrame textAttachmentsWithPredicate:pred]){
+        
         // update attachments that have no original size, that also sets the display size
         if (CGSizeEqualToSize(oneAttachment.originalSize, CGSizeZero))
         {
@@ -407,13 +390,12 @@
             didUpdate = YES;
         }
     }
-    
-    if (didUpdate)
-    {
+    if (didUpdate){
+        
         // layout might have changed due to image sizes
         // do it on next run loop because a layout pass might be going on
         dispatch_async(dispatch_get_main_queue(), ^{
-            [_textview relayoutText];
+            [cell.attributedTextContextView relayoutText];
         });
     }
 }
@@ -433,11 +415,12 @@
         labelSize = [text sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:maxSize lineBreakMode:NSLineBreakByWordWrapping];
         
     }else{
-            labelSize = [text boundingRectWithSize: maxSize
-                                           options: NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading|NSStringDrawingTruncatesLastVisibleLine
-                                        attributes:attributes
-                                           context:nil].size;
-            
+        
+        labelSize = [text boundingRectWithSize: maxSize
+                                       options: NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading|NSStringDrawingTruncatesLastVisibleLine
+                                    attributes:attributes
+                                       context:nil].size;
+        
     }
     labelSize.height=ceil(labelSize.height);
     labelSize.width=ceil(labelSize.width);
@@ -461,15 +444,17 @@
     UIView *leftView = [[UIView alloc]initWithFrame:CGRectMake(0, 20, 120, 44)];
     [leftView addSubview:self.backButton];
     [leftView addSubview:authorView];
-    
-    
-    
+
     return leftView;
 }
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
 
 @end

@@ -50,15 +50,15 @@
         
         CGFloat spacing = 10.0f;
 
-        self.backgroundColor = [UIColor grayColor];
+        self.backgroundColor = [UIColor lightGrayColor];
         
         titleLabel = [[UILabel alloc] init];
         [self.contentView addSubview:titleLabel];
         titleLabel.numberOfLines = 2;
-        titleLabel.font= [UIFont systemFontOfSize:22];
+        titleLabel.font = [UIFont systemFontOfSize:22];
         [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             
-            make.left.top.equalTo(self.contentView).insets(UIEdgeInsetsMake(spacing,spacing,0,0));
+            make.left.top.equalTo(self.contentView).insets(UIEdgeInsetsMake(-5,5,0,0));
             make.width.equalTo(@(ZHAppWidth - spacing * 2));
             make.height.equalTo(@50);
             //            self.cB = make.height.equalTo(@0).priority(UILayoutPriorityRequired);
@@ -69,8 +69,9 @@
         [iconView mas_makeConstraints:^(MASConstraintMaker *make) {
             
             make.left.equalTo(self.contentView.mas_left).offset(spacing);
-            make.top.equalTo(titleLabel).offset(spacing);
+            make.top.equalTo(titleLabel.mas_bottom).offset(0);
             make.height.equalTo(@40);
+            make.width.equalTo(@40);
             //            self.cY = make.height.equalTo(@0).priority(UILayoutPriorityRequired);
         }];
         
@@ -79,7 +80,7 @@
         [self.contentView addSubview:authorName];
         [authorName mas_makeConstraints:^(MASConstraintMaker *make) {
             
-            make.top.equalTo(titleLabel.mas_bottom).offset(spacing);
+            make.top.equalTo(titleLabel.mas_bottom).offset(5);
             make.left.equalTo(iconView.mas_right).offset(spacing);
             make.height.equalTo(@25).priorityLow();
         }];
@@ -91,7 +92,7 @@
         [pushDate mas_makeConstraints:^(MASConstraintMaker *make) {
             
             make.top.equalTo(titleLabel.mas_bottom).offset(spacing);
-            make.left.equalTo(authorName).offset(spacing);
+            make.left.equalTo(authorName.mas_right).offset(spacing);
             make.height.equalTo(@25).priorityLow();
             //            self.cR = make.height.equalTo(@0).priority(UILayoutPriorityRequired);
         }];

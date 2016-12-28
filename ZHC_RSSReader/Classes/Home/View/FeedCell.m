@@ -89,7 +89,7 @@ static NSString *Identifier = @"FeedCell";
         [_articleTitle mas_makeConstraints:^(MASConstraintMaker *make) {
             
             make.top.equalTo(_iconImgview.mas_bottom).offset(spacing);
-            make.left.right.equalTo(self.contentView).insets(UIEdgeInsetsMake(0,spacing,0,spacing));
+            make.left.right.equalTo(self.contentView).insets(UIEdgeInsetsMake(spacing,spacing,0,spacing));
             make.height.equalTo(@25).priorityLow();
             //            self.cR = make.height.equalTo(@0).priority(UILayoutPriorityRequired);
         }];
@@ -101,8 +101,8 @@ static NSString *Identifier = @"FeedCell";
         [self.contentView addSubview:_articleDetail];
         [_articleDetail mas_makeConstraints:^(MASConstraintMaker *make) {
             
-            make.top.equalTo(_articleTitle.mas_bottom).offset(1);
-            make.left.right.equalTo(self.contentView).insets(UIEdgeInsetsMake(0, spacing, 0, spacing));
+            make.top.equalTo(_articleTitle.mas_bottom).offset(spacing);
+            make.left.right.equalTo(self.contentView).insets(UIEdgeInsetsMake(spacing, spacing, 0, spacing));
             make.height.equalTo(@35).priorityLow();
         }];
         
@@ -110,7 +110,9 @@ static NSString *Identifier = @"FeedCell";
         [self.contentView addSubview:_likeview];
         [_likeview mas_makeConstraints:^(MASConstraintMaker *make) {
             
-            make.left.bottom.equalTo(self.contentView).insets(UIEdgeInsetsMake(0,spacing,spacing,0));
+            make.top.equalTo(_articleDetail.mas_bottom).offset(spacing);
+            make.left.equalTo(self.contentView).offset(spacing);
+            make.bottom.equalTo(self.contentView.mas_bottom).offset(0);
             make.width.equalTo(@25);
             make.height.equalTo(@25).priorityLow();
         }];
@@ -119,8 +121,9 @@ static NSString *Identifier = @"FeedCell";
         [self.contentView addSubview:_commentview];
         [_commentview mas_makeConstraints:^(MASConstraintMaker *make) {
             
-            make.bottom.equalTo(self.contentView.mas_bottom).offset(-spacing);
+            make.top.equalTo(_articleDetail.mas_bottom).offset(spacing);
             make.left.equalTo(_likeview.mas_right).offset(spacing);
+            make.bottom.equalTo(self.contentView.mas_bottom).offset(0);
             make.width.equalTo(@25);
             make.height.equalTo(@25).priorityLow();
         }];
@@ -132,18 +135,14 @@ static NSString *Identifier = @"FeedCell";
 - (void)config:(FeedModel *)model{
     
     [self.iconImgview setImage:[UIImage imageNamed:@"zhanwei.jpeg"]];
+    
     self.authorName.text = model.authorName;
     self.articleTitle.text = model.title;
     self.feedName.text = model.feedName;
-//    if(model.summary.length == 0 || model.summary == nil){
-//        
-//        self.articleDetail.text = model.feedDescription;
-//        
-//    }else{
-    
     self.articleDetail.text = model.summary;
     
     
+    //self.cellHeight = 5 + 40 + 5 + self.articleTitle.font.lineHeight * 2 + 5 + self.articleDetail.font.lineHeight * 3 + 5 + 25;
     self.likeview.backgroundColor = [UIColor greenColor];
     self.commentview.backgroundColor = [UIColor redColor];
 }
@@ -151,9 +150,36 @@ static NSString *Identifier = @"FeedCell";
 -(void)setFrame:(CGRect)frame{
     
     //frame.origin.x = 5;//这里间距为10，可以根据自己的情况调整
-   // frame.size.width -= 2 * frame.origin.x;
+    //frame.size.width -= 2 * frame.origin.x;
     frame.size.height -= 2 * 5;
     [super setFrame:frame];
+}
+
+
+- (CGFloat )CalculationLabelHight:(UILabel*) label{
+
+    CGSize labelSize = [self ZFYtextHeightFromTextString:label.text width:ZHAppWidth fontSize:label.font.pointSize];
+    CGFloat rate = label.font.lineHeight; //每一行需要的高度
+    CGRect frame= label.frame;
+    if (labelSize.height >= rate * label.numberOfLines) {
+        frame.size.height = rate * label.numberOfLines;
+    }else{
+        frame.size.height = labelSize.height;
+    }
+    return frame.size.height;
+    //label.frame = frame;
+}
+
+
+//计算 label需要的宽度和高度方法
+-(CGSize)ZFYtextHeightFromTextString:(NSString *)text width:(CGFloat)textWidth fontSize:(CGFloat)size{
+    
+    //计算 label需要的宽度和高度
+    NSDictionary *dict = @{NSFontAttributeName:[UIFont systemFontOfSize:size]};
+    CGRect rect = [text boundingRectWithSize:CGSizeMake(textWidth, MAXFLOAT) options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesFontLeading|NSStringDrawingUsesLineFragmentOrigin attributes:dict context:nil];
+    
+    CGSize size1 = [text sizeWithAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:size]}];
+    return CGSizeMake(size1.width, rect.size.height);
 }
 
 @end

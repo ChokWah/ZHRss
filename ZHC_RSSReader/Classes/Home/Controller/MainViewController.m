@@ -195,8 +195,15 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 180;// 先默认返回180
+    return 200;
+    // 计算高度
+    FeedCell *cell = [FeedCell cellWithTableView:tableView];
+    if(!cell){
+        return 180;
+    }
+    return cell.cellHeight;
 }
+
 // 加载cell
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
